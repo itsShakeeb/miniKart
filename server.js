@@ -1,11 +1,9 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const bodyParser = require("body-parser");
-const multer = require("multer");
-const path = require("path");
+const cors = require("cors");
 
 const app = express();
-const formData = multer();
 connectDB();
 
 //Middleware
@@ -13,12 +11,10 @@ connectDB();
 // app.use(express.json({ extended: true }));
 
 // for parsing application/x-www-form-urlencoded
-
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
-// for parsing multipart/form-data
-// app.use(formData.array());
-app.use(express.static(`uploads/`));
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.status(200).json({ msg: "Server running" });
@@ -27,6 +23,8 @@ app.get("/", (req, res) => {
 app.use("/v1/api/", require("./routes/api/AdminUser"));
 app.use("/v1/api/", require("./routes/api/AdminLogin"));
 app.use("/v1/api/", require("./routes/api/Products/Product"));
+app.use("/v1/api/", require("./routes/api/uploadImages/uploadImages"));
+app.use("/v1/api/", require("./routes/api/Products/CategoriesOfProduct"));
 
 //listening database
 

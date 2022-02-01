@@ -3,18 +3,20 @@ const { check, validationResult } = require("express-validator");
 const bcryptjs = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 const config = require("config");
+const multer = require("multer");
 
 const Admin = require("../../models/AdminUser");
 
+const upload = multer();
 const router = express.Router();
 
 router.post(
   "/admin/register",
+  upload.none(),
   [
     check("email", "Email is required").isEmail(),
     check("password", "Password  length must be between than 6 to 8").isLength({
       min: 6,
-      max: 8,
     }),
   ],
   async (req, res) => {
